@@ -39,6 +39,10 @@ public class Controller {
 			for(GitData data : gitDataObj) {
 				
 				String jiraTicketNumber = data.getTicketNumber();
+				
+				if(jiraTicketNumber.isBlank() || jiraTicketNumber.isEmpty()) 
+					continue;
+				
 				String xmlLink = Controller.HADOOP_LINK + jiraTicketNumber +
 								"/" + jiraTicketNumber + ".xml";
 				
@@ -48,6 +52,11 @@ public class Controller {
 				try {
 					
 					jira.readWebXML(xmlLink);
+					
+					//TODO implement the pre-release and post release bugs.
+					
+					//TODO add data to excel sheet.
+			
 					
 				} catch(FileNotFoundException e) {
 					
