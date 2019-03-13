@@ -213,9 +213,9 @@ public class GitLog {
 	}
 	
 	
-	public static void main(String[] args) throws NoDataException, IOException {
-		GitLog logs = GitLog.getInstance();
-		logs.extractLog("src/gitlog.log");
-		
-	}
+//	public static void main(String[] args) throws NoDataException, IOException {
+//		GitLog logs = GitLog.getInstance();
+//		logs.extractLog("src/gitlog.log");
+//		
+//	}
 }

@@ -178,31 +178,31 @@ public class JiraCall {
 		return data;
 	}
 	
-	public static void main(String[] args) throws MalformedURLException, ParserConfigurationException, SAXException {
-		try {
-			String link = "https://issues.apache.org/jira/si/jira.issueviews:issue-xml/HADOOP-15576/HADOOP-15576.xml";
-			
-			JiraCall call = new JiraCall();
-			//System.out.println(call.getRestData(link));
-			JiraData data = call.readWebXML(link);
-			System.out.println(data.getProjectID());
-			System.out.println(data.getAssignee());
-			System.out.println(data.getReporter());
-			System.out.println(data.getCreatedDate());
-			System.out.println(data.getLink());
-			System.out.println(data.getResolvedDate());
-			System.out.println(data.getResolution());
-			System.out.println(data.getFixVersion());
-			System.out.println(data.getTicketNumber());
-			System.out.println(data.getTitle());
-			System.out.println(data.getVersion());
-			System.out.println(data.getType());
-			System.out.println(data.getPriority());
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	
-	}
+//	public static void main(String[] args) throws MalformedURLException, ParserConfigurationException, SAXException {
+//		try {
+//			String link = "https://issues.apache.org/jira/si/jira.issueviews:issue-xml/HADOOP-15576/HADOOP-15576.xml";
+//			
+//			JiraCall call = new JiraCall();
+//			//System.out.println(call.getRestData(link));
+//			JiraData data = call.readWebXML(link);
+//			System.out.println(data.getProjectID());
+//			System.out.println(data.getAssignee());
+//			System.out.println(data.getReporter());
+//			System.out.println(data.getCreatedDate());
+//			System.out.println(data.getLink());
+//			System.out.println(data.getResolvedDate());
+//			System.out.println(data.getResolution());
+//			System.out.println(data.getFixVersion());
+//			System.out.println(data.getTicketNumber());
+//			System.out.println(data.getTitle());
+//			System.out.println(data.getVersion());
+//			System.out.println(data.getType());
+//			System.out.println(data.getPriority());
+//			
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	
+//	}
 }
