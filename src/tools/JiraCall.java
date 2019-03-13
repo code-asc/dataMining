@@ -23,6 +23,16 @@ import beans.JiraData;
 
 public class JiraCall {
 	
+	private static JiraCall jira = null;
+	
+	private JiraCall() {}
+	
+	public static JiraCall getInstance() {
+		if(jira == null)
+			jira = new JiraCall();
+		
+		return jira;
+	}
 	/**
 	 * @param xmlData This is XML data in the form of String.
 	 * @throws ParserConfigurationException

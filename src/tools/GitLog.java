@@ -9,6 +9,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import beans.GitData;
 import exceptions.NoDataException;
 
 /**
@@ -74,10 +75,12 @@ public class GitLog {
 	 * @throws IOException
 	 */
 	@SuppressWarnings("unused")
-	public List<String> extractLog(String path) throws NoDataException, IOException{
-		List<String> data = new ArrayList<String>();
+	public List<GitData> extractLog(String path) throws NoDataException, IOException{
 		
-		FileReader fr = new FileReader(path);
+		final List<String> data = new ArrayList<String>();
+		final List<GitData> gitData = new ArrayList<GitData>();
+		
+		final FileReader fr = new FileReader(path);
 		Scanner sc = new Scanner(fr);
 		
 		String storeData = "";
@@ -104,7 +107,23 @@ public class GitLog {
 			throw new NoDataException("No data found "
 					+ "while extracting from GIT log file");
 		
-		return data;
+		
+		for(String dataStr : data) {
+			GitData obj = new GitData();
+			
+			obj.setCommitID(getCommitID(dataStr));
+			obj.setAuthor(getAuthor(dataStr));
+			obj.setDate(getDate(dataStr));
+			obj.setTicketNumber(getTicketNumber(dataStr));
+			obj.setInsertions(getInsertions(dataStr));
+			obj.setDeletions(getDeletions(dataStr));
+			obj.setFileChanges(getNumberOfFilesChanged(dataStr));
+			obj.setChangedFileNames(getChangedFileNames(dataStr));
+			
+			gitData.add(obj);
+		}
+		
+		return gitData;
 	}
 	
 	
