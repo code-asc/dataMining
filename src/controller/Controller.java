@@ -1,18 +1,6 @@
 package controller;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
-import beans.GitData;
-import exceptions.NoDataException;
-import tools.GitLog;
-import tools.JiraCall;
+import tools.PreReleaseBugs;
 
 /**
  * This is controller class. This class is responsible for link both beans 
@@ -25,65 +13,12 @@ import tools.JiraCall;
  */
 public class Controller {
 	
-	public static final String HADOOP_LINK = "https://issues.apache.org/jira/si/jira.issueviews:issue-xml/";
 	
 	public static void main(String[] args) {
 		
-		final GitLog logData = GitLog.getInstance();
-		final List<String> filesNotFound = new ArrayList<String>();
-		
-		try {
-			
-			List<GitData> gitDataObj = logData.extractLog("src/gitLogFile/log.log");
-		
-			for(GitData data : gitDataObj) {
-				
-				String jiraTicketNumber = data.getTicketNumber();
-				
-				if(jiraTicketNumber.isBlank() || jiraTicketNumber.isEmpty()) 
-					continue;
-				
-				String xmlLink = Controller.HADOOP_LINK + jiraTicketNumber +
-								"/" + jiraTicketNumber + ".xml";
-				
-				
-				JiraCall jira = JiraCall.getInstance();
-				
-				try {
-					
-					jira.readWebXML(xmlLink);
-					
-					//TODO implement the pre-release and post release bugs.
-					
-					//TODO add data to excel sheet.
-			
-					
-				} catch(FileNotFoundException e) {
-					
-					filesNotFound.add(jiraTicketNumber);
-				}
-				
-				
-				System.out.println(jiraTicketNumber);
-			}
-				
-			
-		} catch (NoDataException e) {
-			
-			e.printStackTrace();
-			
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-			
-		} catch (ParserConfigurationException e) {
-			
-			e.printStackTrace();
-			
-		} catch (SAXException e) {
-			
-			e.printStackTrace();
-		}
+		PreReleaseBugs preReleaseBugs = PreReleaseBugs.getInstance();
+		preReleaseBugs.copyPreReleaseBugsToExcel("");
 	}
 
+	
 }
