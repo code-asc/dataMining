@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import beans.GitData;
 import exceptions.NoDataException;
+import exceptions.NoStringDataException;
 
 /**
  * @author sandeepchowdaryannabathuni
@@ -73,9 +74,10 @@ public class GitLog {
 	 * @return List<String>
 	 * @throws NoDataException
 	 * @throws IOException
+	 * @throws NoStringDataException 
 	 */
 	@SuppressWarnings("unused")
-	public List<GitData> extractLog(String path) throws NoDataException, IOException{
+	public List<GitData> extractLog(String path) throws NoDataException, IOException, NoStringDataException{
 		
 		final List<String> data = new ArrayList<String>();
 		final List<GitData> gitData = new ArrayList<GitData>();
@@ -105,7 +107,7 @@ public class GitLog {
 		
 		if(data.size() < 1)
 			throw new NoDataException("No data found "
-					+ "while extracting from GIT log file");
+					+ "while extracting from GIT log file in GitLog.java : extractLog");
 		
 		
 		for(String dataStr : data) {
@@ -118,7 +120,7 @@ public class GitLog {
 			obj.setInsertions(getInsertions(dataStr));
 			obj.setDeletions(getDeletions(dataStr));
 			obj.setFileChanges(getNumberOfFilesChanged(dataStr));
-			obj.setChangedFileNames(getChangedFileNames(dataStr));
+			obj.setChangedFileNames(getChangedFileNamesAndThresold(dataStr));
 			
 			gitData.add(obj);
 		}
@@ -127,6 +129,10 @@ public class GitLog {
 	}
 	
 	
+	/**
+	 * @param data This is the GIT log.
+	 * @return String The commit id.
+	 */
 	private String getCommitID(String data) {
 		final String regex = "(commit)\\s*\\w*";
 		String id = "";
@@ -138,6 +144,11 @@ public class GitLog {
 		return id.replace("commit", "").strip();
 	}
 	
+	
+	/**
+	 * @param data This is the GIT log.
+	 * @return String The author of the commit
+	 */
 	private String getAuthor(String data) {
 		final String regex = "(Author:).*";
 		String author = "";
@@ -149,6 +160,11 @@ public class GitLog {
 		return author.replace("Author", "").strip();
 	}
 	
+	
+	/**
+	 * @param data This is the GIT log.
+	 * @return String The commit date.
+	 */
 	private String getDate(String data) {
 		final String regex = "(Date:).*";
 		String date = "";
@@ -160,6 +176,11 @@ public class GitLog {
 		return date.replace("Date", "").strip();
 	}
 	
+	
+	/**
+	 * @param data This is the GIT log.
+	 * @return The Ticket id of the commit.
+	 */
 	private String getTicketNumber(String data) {
 		final String regex = "\\b[a-zA-Z]+-[0-9]+\\b";
 		String ticketNumber = "";
@@ -172,6 +193,11 @@ public class GitLog {
 		return ticketNumber.strip();
 	}
 	
+	
+	/**
+	 * @param data This is the GIT log.
+	 * @return String The total number of insertions for the commit.
+	 */
 	private String getInsertions(String data) {
 		final String regex = "[0-9]*\\s+insertion(s)?\\(\\+\\)";
 		String insertions = "";
@@ -187,6 +213,11 @@ public class GitLog {
 		
 	}
 	
+	
+	/**
+	 * @param data This is the GIT log.
+	 * @return String The total number of deletions for a commit.
+	 */
 	private String getDeletions(String data) {
 		final String regex = "[0-9]*\\s+deletions(s)?\\(\\-\\)";
 		String deletions = "";
@@ -202,6 +233,11 @@ public class GitLog {
 		
 	}
 	
+	
+	/**
+	 * @param data This is the GIT log.
+	 * @return String Number of changes in files for a particular commit.
+	 */
 	private String getNumberOfFilesChanged(String data) {
 		final String regex = "(\\s)+[0-9]*(\\s)file(s)?(\\s)changed";
 		String changedCount = "";
@@ -217,15 +253,33 @@ public class GitLog {
 		return changedCount.strip();
 	}
 	
-	private List<String> getChangedFileNames(String data) {
-		final String regex = "(\\s)\\.*/[a-zA-Z0-9/.]*";
+	
+	/**
+	 * @param data This is the GIT log.
+	 * @return List<String> The file name that is changed followed by number of lines.
+	 * @throws NoStringDataException
+	 */
+	private List<String> getChangedFileNamesAndThresold(String data) throws NoStringDataException {
+		final String regex = "(\\s)\\.*/[a-zA-Z0-9/.]*(\\s)*|[0-9]*";
 		List<String> fileData = new ArrayList<String>();
 		
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(data);
 		
-		while(matcher.find())
-			fileData.add(matcher.group());
+		while(matcher.find()) {
+			String temp = matcher.group();
+			String[] fileContent = temp.split("|");
+			String fileName = fileContent[0].strip();
+			String changes = fileContent[1].strip();
+			
+			if(fileName.isBlank() || fileName.isEmpty() || 
+					changes.isBlank() || changes.isEmpty())
+				throw new NoStringDataException("Exception found in GitLog.java : getChangedFileNamesAndThresold");
+				
+			fileData.add(fileName.concat(" " + changes));
+			
+		}
+			
 		
 		return fileData;
 		
