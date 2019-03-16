@@ -12,6 +12,7 @@ import org.xml.sax.SAXException;
 import beans.GitData;
 import beans.JiraData;
 import exceptions.NoDataException;
+import exceptions.NoStringDataException;
 
 /**
  * This class to used to get the stats of the prerelease bugs by using the
@@ -34,7 +35,7 @@ public class PreReleaseBugs {
 	}
 	
 	
-	public void copyPreReleaseBugsToExcel(String filePath) {
+	public void copyPreReleaseBugsToExcel(String filePath) throws NoStringDataException {
 		final GitLog logData = GitLog.getInstance();
 		final List<String> filesNotFound = new ArrayList<String>();
 		
