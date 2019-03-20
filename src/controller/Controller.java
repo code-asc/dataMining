@@ -1,5 +1,7 @@
 package controller;
 
+import java.io.IOException;
+
 import exceptions.NoStringDataException;
 import tools.PreReleaseBugs;
 
@@ -15,10 +17,10 @@ import tools.PreReleaseBugs;
 public class Controller {
 	
 	
-	public static void main(String[] args) throws NoStringDataException {
+	public static void main(String[] args) throws NoStringDataException, IOException {
 		
 		PreReleaseBugs preReleaseBugs = PreReleaseBugs.getInstance();
-		preReleaseBugs.copyPreReleaseBugsToExcel("");
+		preReleaseBugs.churnsForEachFile();
 	}
 
 	

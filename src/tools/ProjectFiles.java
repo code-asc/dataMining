@@ -61,7 +61,7 @@ public class ProjectFiles {
 		while(rows.hasNext()) {
 			Row row = rows.next();
 			//System.out.println(row.getCell(1).getStringCellValue());
-			files.add(row.getCell(col).getStringCellValue());
+			files.add(row.getCell(col).getStringCellValue().strip());
 		}
 		
 		return files;
