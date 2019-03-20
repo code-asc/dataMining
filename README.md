@@ -1,6 +1,6 @@
 <h2>This is the project of SOEN-691 for the Winter 2019.</h2>
 
-The project is implementation of the research paper of <b>Guilherme B. de Pádua and Weiyi Shang. Studying the relationship between exception handling practices and post-release defects. The 15th International Conference on Mining Software Repositories (MSR 2018).</b>
+The project is implementation of the research paper <b>Guilherme B. de Pádua and Weiyi Shang. Studying the relationship between exception handling practices and post-release defects. The 15th International Conference on Mining Software Repositories (MSR 2018).</b>
 </br></br>
 For post release bugs, we considered versions </br>
 --before = 2018-Aug-8
