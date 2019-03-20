@@ -127,11 +127,11 @@ public class PreReleaseBugs {
 					
 						}
 							
-//						
-//						for(String str : churnData.keySet()) {
-//							if(churnData.get(str) > 0)
-//								System.out.println(str + " : " + churnData.get(str));
-//						}
+						
+						for(String str : churnData.keySet()) {
+							if(churnData.get(str) > 0)
+								System.out.println(str + " : " + churnData.get(str));
+						}
 						
 						//TODO implement the pre-release and post release bugs.
 						
