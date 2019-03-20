@@ -260,15 +260,15 @@ public class GitLog {
 	 * @throws NoStringDataException
 	 */
 	private List<String> getChangedFileNamesAndThresold(String data) throws NoStringDataException {
-		final String regex = "(\\s)\\.*/[a-zA-Z0-9/.]*(\\s)*|[0-9]*";
+		final String regex = "[a-zA-Z0-9@#$-]*\\.java(\\s)*\\|(\\s)*[0-9]*";
 		List<String> fileData = new ArrayList<String>();
 		
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(data);
-		
+		//System.out.println(data);
 		while(matcher.find()) {
 			String temp = matcher.group();
-			String[] fileContent = temp.split("|");
+			String[] fileContent = temp.split("\\|");
 			String fileName = fileContent[0].strip();
 			String changes = fileContent[1].strip();
 			
