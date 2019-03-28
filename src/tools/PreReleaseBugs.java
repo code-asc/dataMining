@@ -30,7 +30,7 @@ public class PreReleaseBugs {
 	
 	private static String HADOOP_LINK;
 	private static String PRE_RELEASE_LOG;
-	private ProjectFiles projectFiles;
+	private ExtractMetrics projectFiles;
 	
 	static {
 
@@ -46,7 +46,7 @@ public class PreReleaseBugs {
 	}
 	
 	private PreReleaseBugs() {
-		projectFiles = ProjectFiles.getInstance();
+		projectFiles = ExtractMetrics.getInstance();
 	}
 	
 	
