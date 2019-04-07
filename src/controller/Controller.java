@@ -1,8 +1,13 @@
 package controller;
 
 import java.io.IOException;
+import java.util.Map;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+
+import exceptions.ColumnAlreadyExistsException;
 import exceptions.NoStringDataException;
+import tools.ExcelAppender;
 import tools.PreReleaseBugs;
 
 /**
@@ -17,10 +22,14 @@ import tools.PreReleaseBugs;
 public class Controller {
 	
 	
-	public static void main(String[] args) throws NoStringDataException, IOException {
+	public static void main(String[] args) throws NoStringDataException, IOException, InvalidFormatException, ColumnAlreadyExistsException {
 		
 		PreReleaseBugs preReleaseBugs = PreReleaseBugs.getInstance();
-		preReleaseBugs.churnsForEachFile();
+		Map<String, Integer> map = preReleaseBugs.churnsForEachFile();
+		ExcelAppender ea = ExcelAppender.getInstance();
+		ea.addData(map, preReleaseBugs.getMetricsData().fileNameWithRow, "preRelease");
+		
+		System.out.println(map.size());
 	}
 
 	

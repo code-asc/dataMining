@@ -260,7 +260,7 @@ public class GitLog {
 	 * @throws NoStringDataException
 	 */
 	private List<String> getChangedFileNamesAndThresold(String data) throws NoStringDataException {
-		final String regex = "[a-zA-Z0-9@#$-]*\\.java(\\s)*\\|(\\s)*[0-9]*";
+		final String regex = "[/a-zA-Z0-9@#$-._]*\\.java(\\s)*\\|(\\s)*[0-9]*";
 		List<String> fileData = new ArrayList<String>();
 		
 		Pattern pattern = Pattern.compile(regex);
@@ -286,9 +286,10 @@ public class GitLog {
 	}
 	
 	
-//	public static void main(String[] args) throws NoDataException, IOException {
+//	public static void main(String[] args) throws NoDataException, IOException, NoStringDataException {
 //		GitLog logs = GitLog.getInstance();
-//		logs.extractLog("src/gitlog.log");
+//		logs.extractLog("src/gitLogFile/prerelease.log");
+//		
 //		
 //	}
 }

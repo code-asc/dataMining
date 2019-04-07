@@ -72,10 +72,16 @@ public class ExtractMetrics {
 			Row row = rows.next();
 			//System.out.println(row.getRowNum());
 			
+			
 			//System.out.println(row.getCell(1).getStringCellValue());
 			if(row.getRowNum() != avoidRowHeading) {
-				fileNameWithRow.put(row.getCell(col).getStringCellValue().strip(), row.getRowNum());
-				files.add(row.getCell(col).getStringCellValue().strip());
+				String name = row.getCell(col).getStringCellValue().strip();
+				int rowNumber = row.getRowNum();
+				fileNameWithRow.put(name, rowNumber);
+				files.add(name);
+				
+				
+				System.out.println(name);
 			}
 		}
 		
@@ -83,51 +89,13 @@ public class ExtractMetrics {
 	}
 	
 	
-	/**
-	 * @return Map<String, Integer> This function is used to get all the fileNames from the 
-	 * excel sheet along with their row number
-	 * @throws IOException
-	 * @throws EncryptedDocumentException
-	 * @throws InvalidFormatException
-	 */
-	public Map<String, Integer> getFileNamesWithRowNumber() throws IOException, EncryptedDocumentException, InvalidFormatException {
-		
-		Map<String, Integer> filesAndRownum = new HashMap<String, Integer>();
-		
-		// This is the metrics file from which we will
-		// extract the required file names.
-		String metricsFile = Config.getProperty("productmetrics");
-		
-		int avoidRowHeading = Integer.parseInt(Config.getProperty("avoidrowheadings"));
-		
-		int col = Integer.parseInt(Config.getProperty("filenamecol"));
-		
-		
-		Workbook workbook = new XSSFWorkbook(new File(metricsFile));
-		
-		Sheet sheet = workbook.getSheetAt(0);
-		
-		Iterator<Row> rows = sheet.iterator();
-		
-		
-		while(rows.hasNext()) {
-			Row row = rows.next();
-			//System.out.println(row.getRowNum());
-			
-			//System.out.println(row.getCell(1).getStringCellValue());
-			if(row.getRowNum() != avoidRowHeading)
-				filesAndRownum.put(row.getCell(col).getStringCellValue().strip(), row.getRowNum());
-		}
-		
-		return filesAndRownum;
-	}
 	
 	
 //	public static void main(String[] args) throws EncryptedDocumentException, InvalidFormatException, IOException {
 //		
 //		ExtractMetrics files = ExtractMetrics.getInstance();
 //		files.getAllFileNamesFromMetrix();
-//		files.hasColumnName();
+//		
 //	}
 	
 	

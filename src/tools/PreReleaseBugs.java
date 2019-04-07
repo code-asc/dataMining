@@ -4,8 +4,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -32,6 +34,9 @@ public class PreReleaseBugs {
 	private static String PRE_RELEASE_LOG;
 	private ExtractMetrics projectFiles;
 	
+	
+
+
 	static {
 
 		try {
@@ -57,6 +62,10 @@ public class PreReleaseBugs {
 		return obj;
 	}
 	
+	public ExtractMetrics getMetricsData() {
+		return projectFiles;
+	}
+	
 	
 	/**
 	 * This method is used to gather all the required pre relsease churns.
@@ -74,13 +83,21 @@ public class PreReleaseBugs {
 			
 			
 			List<String> allFilesNamesInMetrix = projectFiles.getAllFileNamesFromMetrix();
+			Set<String> map = new HashSet<String>();
+			map.addAll(allFilesNamesInMetrix);
+			//System.out.println("Total files: " + allFilesNamesInMetrix.size());
 			
 			for(String fileName : allFilesNamesInMetrix) {
 				churnData.put(fileName, 0);
 			}
+			//System.out.println(churnData.size());
+			//System.exit(0);
 			
+			System.out.println("Total : " + allFilesNamesInMetrix.size());
+			System.out.println("Set : " + map.size());
+			System.out.println("Before churn data : " + churnData.size());
 			
-			List<GitData> gitDataObj = logData.extractLog("src/gitLogFile/prerelease.log");
+			List<GitData> gitDataObj = logData.extractLog(PRE_RELEASE_LOG);
 		
 			for(GitData data : gitDataObj) {
 				
@@ -128,11 +145,11 @@ public class PreReleaseBugs {
 						}
 							
 						
-						for(String str : churnData.keySet()) {
-							if(churnData.get(str) > 0)
-								System.out.println(str + " : " + churnData.get(str));
-						}
-						
+//						for(String str : churnData.keySet()) {
+//							if(churnData.get(str) > 0)
+//								System.out.println(str + " : " + churnData.get(str));
+//						}
+//						
 						//TODO implement the pre-release and post release bugs.
 						
 						//TODO add data to excel sheet.
@@ -157,7 +174,7 @@ public class PreReleaseBugs {
 					" PreReleaseBugs.java : churnsForEachFile");
 			
 		}
-		
+		System.out.println("Churn: " + churnData.size());
 		return churnData;
 	}
 }
