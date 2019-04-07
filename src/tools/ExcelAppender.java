@@ -80,47 +80,6 @@ public class ExcelAppender {
 	}
 	
 	
-//	private void fillEmptyColWithZero(String fileName, int maxRow, int col) throws IOException, EncryptedDocumentException, InvalidFormatException {
-//		
-//		String metricsFile = Config.getProperty("productmetrics");
-//		String finalMetricsFiles = Config.getProperty("includeprereleaseproductmetrics");
-//		int avoidRowHeading = Integer.parseInt(Config.getProperty("avoidrowheadings"));
-//		InputStream inp = new FileInputStream(metricsFile); 
-//		Workbook wb = new XSSFWorkbook(inp); //Access the workbook
-//        
-//        Sheet worksheet = wb.getSheetAt(0);
-//        Cell cell = null; // declare a Cell object
-//        
-////        for(int i = 2; i < maxRow; i++) {
-////        	cell = worksheet.getRow(i).getCell(col);   // Access the second cell in second row to update the value
-////            
-////            cell.setCellValue("OverRide Last Name");
-////        }
-//        
-//        Iterator<Row> rows = worksheet.iterator();
-//    	while(rows.hasNext()) {
-//			Row row = rows.next();
-//			System.out.println(row.getRowNum());
-//			
-//			
-//			//System.out.println(row.getCell(1).getStringCellValue());
-//			if(row.getRowNum() != avoidRowHeading) {
-//				cell = row.getCell(col);
-//				cell.setCellValue("OverRide Last Name");
-//				
-//			}
-//			
-//		}
-//          
-//        inp.close(); //Close the InputStream
-//         
-//        FileOutputStream output_file =new FileOutputStream(new File(metricsFile));  //Open FileOutputStream to write updates
-//          
-//        wb.write(output_file); //write changes
-//          
-//        output_file.close();
-//	}
-	
 	private void addDataHelper(Map<String, Integer> data, 
 							   Map<String, Integer> fileRowNum,
 							   String newColName) throws IOException, InvalidFormatException {
