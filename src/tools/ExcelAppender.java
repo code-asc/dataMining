@@ -82,10 +82,11 @@ public class ExcelAppender {
 	
 	private void addDataHelper(Map<String, Integer> data, 
 							   Map<String, Integer> fileRowNum,
-							   String newColName) throws IOException, InvalidFormatException {
+							   String newColName,
+							   String metricsFile) throws IOException, InvalidFormatException {
 		
 		
-		String metricsFile = Config.getProperty("productmetrics");
+		//String metricsFile = Config.getProperty("productmetrics");
 		String finalMetricsFiles = Config.getProperty("includeprereleaseproductmetrics");
 		
 		InputStream inp = new FileInputStream(metricsFile); 
@@ -132,7 +133,8 @@ public class ExcelAppender {
 	 */
 	public void addData(Map<String, Integer> fileChurn, 
 						Map<String, Integer> fileRowNum, 
-						String newColName) throws ColumnAlreadyExistsException, InvalidFormatException, IOException {
+						String newColName,
+						String metricsFile) throws ColumnAlreadyExistsException, InvalidFormatException, IOException {
 		
 		System.out.println("Appending data to the excel.");
 		if(hasColumnName(newColName)) 
@@ -140,7 +142,7 @@ public class ExcelAppender {
 					+ "the excel addData():ExeclAppender");
 		
 		
-		addDataHelper(fileChurn, fileRowNum, newColName);
+		addDataHelper(fileChurn, fileRowNum, newColName, metricsFile);
 		
 		System.out.println("Data appended");
 		// TODO write data to the sheet

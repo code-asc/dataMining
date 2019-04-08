@@ -7,7 +7,9 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import exceptions.ColumnAlreadyExistsException;
 import exceptions.NoStringDataException;
+import tools.Config;
 import tools.ExcelAppender;
+import tools.PostReleaseBugs;
 import tools.PreReleaseBugs;
 
 /**
@@ -25,11 +27,22 @@ public class Controller {
 	public static void main(String[] args) throws NoStringDataException, IOException, InvalidFormatException, ColumnAlreadyExistsException {
 		
 		PreReleaseBugs preReleaseBugs = PreReleaseBugs.getInstance();
-		Map<String, Integer> map = preReleaseBugs.churnsForEachFile();
-		ExcelAppender ea = ExcelAppender.getInstance();
-		ea.addData(map, preReleaseBugs.getMetricsData().fileNameWithRow, "preRelease");
+		PostReleaseBugs postReleaseBugs = PostReleaseBugs.getInstance();
 		
-		System.out.println(map.size());
+		Map<String, Integer> mapForPreRelease = preReleaseBugs.churnsForEachFile();
+		Map<String, Integer> mapForPostRelease = postReleaseBugs.churnsForEachFile();
+		
+		ExcelAppender ea = ExcelAppender.getInstance();
+		
+		String metricsFile = Config.getProperty("productmetrics");
+		
+		ea.addData(mapForPreRelease, preReleaseBugs.getMetricsData().fileNameWithRow, "preRelease", metricsFile);
+		
+		metricsFile = Config.getProperty("includeprereleaseproductmetrics");
+		
+		ea.addData(mapForPostRelease, postReleaseBugs.getMetricsData().fileNameWithRow, "postRelease", metricsFile);
+		
+		//System.out.println(map.size());
 	}
 
 	
