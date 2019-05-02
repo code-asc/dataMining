@@ -11,6 +11,7 @@ import tools.Config;
 import tools.ExcelAppender;
 import tools.PostReleaseBugs;
 import tools.PreReleaseBugs;
+import tools.ReadAntiPattern;
 
 /**
  * This is controller class. This class is responsible for link both beans 
@@ -28,10 +29,13 @@ public class Controller {
 		
 		PreReleaseBugs preReleaseBugs = PreReleaseBugs.getInstance();
 		PostReleaseBugs postReleaseBugs = PostReleaseBugs.getInstance();
+		ReadAntiPattern antiPattern = new ReadAntiPattern();
 		
 		Map<String, Integer> mapForPreRelease = preReleaseBugs.churnsForEachFile();
 		Map<String, Integer> mapForPostRelease = postReleaseBugs.churnsForEachFile();
+		Map<String, Map<String, Integer>> mapForAntipattern = antiPattern.generateData(Config.getProperty("antipattern"));
 		
+		System.exit(0);
 		ExcelAppender ea = ExcelAppender.getInstance();
 		
 		String metricsFile = Config.getProperty("productmetrics");
