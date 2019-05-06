@@ -1,0 +1,99 @@
+/** For BSFC Model **/
+library(Hmisc)
+library(car)
+library(caret)
+library(effsize)
+library(imputeTS)
+
+data = read.csv("D:/SOEN_DataMining/flow.csv")
+drop = c("Kind", "Name", "PercentLackOfCohesion", "MinEssentialKnots", "MaxInheritanceTree", "MaxEssentialKnots", "Knots", "Essential", "CyclomaticStrict", "CyclomaticModified", "Cyclomatic", "CountPathLog", "CountPath", "CountOutput", "CountInput", "CountDeclMethodAll", "CountDeclFile", "CountClassDerived", "CountClassCoupled", "CountClassBase")
+
+data = data[, !(names(data) %in% drop)]
+data = na.replace(data, 0)
+
+drop=c("postRelease")
+independant=data[,!(names(data) %in% drop)]
+correlations <- cor(independant, method="spearman") 
+highCorr <- findCorrelation(correlations, cutoff = .75) 
+low_cor_names=names(independant[, -highCorr])
+low_cor_data= independant[(names(independant) %in% low_cor_names)]
+dataforredun=low_cor_data
+redun_obj = redun (~. ,data = dataforredun ,nk =0)
+after_redun= dataforredun[,!(names(dataforredun) %in% redun_obj $Out)]
+form=as.formula(paste("postRelease>0~",paste(names(after_redun),collapse="+")))
+model=glm(formula=form, data=log10(data+1), family = binomial(link = "logit"))
+
+newform=postRelease>0~CountDeclInstanceVariable+CountLineComment+MaxNesting+RatioCommentToCode+preRelease+rawtry
+newmodel=glm(formula=newform, data=log10(data+1), family = binomial(link = "logit"))
+r2= 1-model$deviance/model$null.deviance
+
+testdata=data.frame(CountDeclInstanceVariable= log10(mean(data$CountDeclInstanceVariable)+1), 
+CountLineComment=log10(mean(data$CountLineComment)+1), 
+MaxNesting=log10(mean(data$MaxNesting)+1), 
+RatioCommentToCode=log10(mean(data$RatioCommentToCode)+1), 
+preRelease=log10(mean(data$preRelease)+1), 
+rawtry=log10(mean(data$rawtry)+1)) 
+
+p= predict(newmodel, testdata, type="response")
+-***********************
+
+testdata=data.frame(CountDeclInstanceVariable= log10(mean(data$CountDeclInstanceVariable)*0.1+1), 
+CountLineComment=log10(mean(data$CountLineComment)+1), 
+MaxNesting=log10(mean(data$MaxNesting)+1), 
+RatioCommentToCode=log10(mean(data$RatioCommentToCode)+1), 
+preRelease=log10(mean(data$preRelease)+1), 
+rawtry=log10(mean(data$rawtry)+1)) 
+
+p1= predict(newmodel, testdata, type="response")
+******************
+
+testdata=data.frame(CountDeclInstanceVariable= log10(mean(data$CountDeclInstanceVariable)+1), 
+CountLineComment=log10(mean(data$CountLineComment)*0.1+1), 
+MaxNesting=log10(mean(data$MaxNesting)+1), 
+RatioCommentToCode=log10(mean(data$RatioCommentToCode)+1), 
+preRelease=log10(mean(data$preRelease)+1), 
+rawtry=log10(mean(data$rawtry)+1)) 
+
+p2= predict(newmodel, testdata, type="response")
+**********************
+
+testdata=data.frame(CountDeclInstanceVariable= log10(mean(data$CountDeclInstanceVariable)+1), 
+CountLineComment=log10(mean(data$CountLineComment)+1), 
+MaxNesting=log10(mean(data$MaxNesting)*0.1+1), 
+RatioCommentToCode=log10(mean(data$RatioCommentToCode)+1), 
+preRelease=log10(mean(data$preRelease)+1), 
+rawtry=log10(mean(data$rawtry)+1)) 
+
+p3= predict(newmodel, testdata, type="response")
+***********************
+
+testdata=data.frame(CountDeclInstanceVariable= log10(mean(data$CountDeclInstanceVariable)+1), 
+CountLineComment=log10(mean(data$CountLineComment)+1), 
+MaxNesting=log10(mean(data$MaxNesting)+1), 
+RatioCommentToCode=log10(mean(data$RatioCommentToCode)*0.1+1), 
+preRelease=log10(mean(data$preRelease)+1), 
+rawtry=log10(mean(data$rawtry)+1)) 
+
+p4= predict(newmodel, testdata, type="response")
+**************************
+
+testdata=data.frame(CountDeclInstanceVariable= log10(mean(data$CountDeclInstanceVariable)+1), 
+CountLineComment=log10(mean(data$CountLineComment)+1), 
+MaxNesting=log10(mean(data$MaxNesting)+1), 
+RatioCommentToCode=log10(mean(data$RatioCommentToCode)+1), 
+preRelease=log10(mean(data$preRelease)*0.1+1), 
+rawtry=log10(mean(data$rawtry)+1)) 
+
+p5= predict(newmodel, testdata, type="response")
+****************************
+
+testdata=data.frame(CountDeclInstanceVariable= log10(mean(data$CountDeclInstanceVariable)+1), 
+CountLineComment=log10(mean(data$CountLineComment)+1), 
+MaxNesting=log10(mean(data$MaxNesting)+1), 
+RatioCommentToCode=log10(mean(data$RatioCommentToCode)+1), 
+preRelease=log10(mean(data$preRelease)+1), 
+rawtry=log10(mean(data$rawtry)*0.1+1)) 
+
+p6= predict(newmodel, testdata, type="response")
+
+
